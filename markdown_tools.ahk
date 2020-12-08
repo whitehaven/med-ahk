@@ -7,23 +7,22 @@
 ; Places the link as follows in the clipboard [text](url)
 
 ^!c::
-;Clipboard :=
-SendInput ^c
+    ;Clipboard :=
+    SendInput ^c
 
-MDurl = %Clipboard%
-MDtext = %Clipboard%
+    MDurl = %Clipboard%
+    MDtext = %Clipboard%
 
-IfNotInString, MDurl, ://
-  MDurl = http://%MDurl%
+    IfNotInString, MDurl, ://
+    MDurl = http://%MDurl%
 
-Gui, +AlwaysOnTop +Owner
-Gui, Add, Text,, Text to display
-Gui, Add, Edit, vMDtext w320 r1, %MDtext%
-Gui, Add, Text,, URL
-Gui, Add, Edit, vMDurl w320 r1, %MDurl%
-Gui, Add, Button, Default, OK
-Gui, Show, w350, MDLink
-
+    Gui, +AlwaysOnTop +Owner
+    Gui, Add, Text,, Text to display
+    Gui, Add, Edit, vMDtext w320 r1, %MDtext%
+    Gui, Add, Text,, URL
+    Gui, Add, Edit, vMDurl w320 r1, %MDurl%
+    Gui, Add, Button, Default, OK
+    Gui, Show, w350, MDLink
 Return
 
 ButtonOK:
@@ -32,17 +31,16 @@ ButtonOK:
     Clipboard = [%MDtext%](%MDurl%)
     TrayTip, MDLink, Markdown-formatted URL in clipboard
     SetTimer, RemoveTrayTip, 2000
-    Return
+Return
 
 GuiClose:
     Gui, Destroy
     TrayTip, MDLink, MD Link generation cancelled
     SetTimer, RemoveTrayTip, 2000
-    Return
+Return
 
 RemoveTrayTip:
-	; Used by several functions to kill the TrayTip
-	
+    ; Used by several functions to kill the TrayTip
     SetTimer, RemoveTrayTip, Off 
     TrayTip 
-return
+Return

@@ -18,10 +18,10 @@
 SetBatchLines -1
 Process Priority,,High
 
-xe := 2.718281828459045, xpi := 3.141592653589793      ; referenced as "e", "pi"
-xinch := 2.54, xfoot := 30.48, xmile := 1.609344       ; [cm], [cm], [Km]
+xe := 2.718281828459045, xpi := 3.141592653589793 ; referenced as "e", "pi"
+xinch := 2.54, xfoot := 30.48, xmile := 1.609344 ; [cm], [cm], [Km]
 xounce := 0.02841, xpint := 0.5682, xgallon := 4.54609 ; liters
-xoz := 28.35, xlb := 453.59237                         ; gramms
+xoz := 28.35, xlb := 453.59237 ; grams
 
 /* -test cases
 MsgBox % Eval("1e1")                                               ; 10
@@ -55,204 +55,204 @@ t := A_TickCount - t
 MsgBox Result = %r%`nTime = %t%                                    ; -1.93288: ~400 ms [on Inspiron 9300]
 */
 
-^#-::                                  ; Replace selection or `expression with result
-^#=::                                  ; Append result to selection or `expression
+^#-:: ; Replace selection or `expression with result
+^#=:: ; Append result to selection or `expression
    ClipBoard =
-   SendInput ^c                        ; copy selection
+   SendInput ^c ; copy selection
    ClipWait 0.5
    If (ErrorLevel) {
-      SendInput +{HOME}^c              ; copy, keep selection to overwrite (^x for some apps)
+      SendInput +{HOME}^c ; copy, keep selection to overwrite (^x for some apps)
       ClipWait 1
       IfEqual ErrorLevel,1, Return
       If RegExMatch(ClipBoard, "(.*)(``)(.*)", y)
-         SendInput %  "{RAW}" y1 . (A_ThisHotKey="^#=" ? y3 . " = "  : "") . Eval(y3)
+         SendInput % "{RAW}" y1 . (A_ThisHotKey="^#=" ? y3 . " = " : "") . Eval(y3)
    } Else
-      SendInput % "{RAW}" . (A_ThisHotKey="^#=" ? ClipBoard . " = "  : "") . Eval(ClipBoard)
+   SendInput % "{RAW}" . (A_ThisHotKey="^#=" ? ClipBoard . " = " : "") . Eval(ClipBoard)
 Return
 
-Eval(x) {                              ; non-recursive PRE/POST PROCESSING: I/O forms, numbers, ops, ";"
+Eval(x) { ; non-recursive PRE/POST PROCESSING: I/O forms, numbers, ops, ";"
    Local FORM, FormF, FormI, i, W, y, y1, y2, y3, y4
    FormI := A_FormatInteger, FormF := A_FormatFloat
 
-   SetFormat Integer, D                ; decimal intermediate results!
+   SetFormat Integer, D ; decimal intermediate results!
    RegExMatch(x, "\$(b|h|x|)(\d*[eEgG]?)", y)
-   FORM := y1, W := y2                 ; HeX, Bin, .{digits} output format
-   SetFormat FLOAT, 0.16e              ; Full intermediate float precision
-   StringReplace x, x, %y%             ; remove $..
+   FORM := y1, W := y2 ; HeX, Bin, .{digits} output format
+   SetFormat FLOAT, 0.16e ; Full intermediate float precision
+   StringReplace x, x, %y% ; remove $..
    Loop
       If RegExMatch(x, "i)(.*)(0x[a-f\d]*)(.*)", y)
-         x := y1 . y2+0 . y3           ; convert hex numbers to decimal
-      Else Break
-   Loop
+      x := y1 . y2+0 . y3 ; convert hex numbers to decimal
+   Else Break
+      Loop
       If RegExMatch(x, "(.*)'([01]*)(.*)", y)
-         x := y1 . FromBin(y2) . y3    ; convert binary numbers to decimal: sign = first bit
-      Else Break
-   x := RegExReplace(x,"(^|[^.\d])(\d+)(e|E)","$1$2.$3") ; add missing '.' before E (1e3 -> 1.e3)
-                                       ; literal scientific numbers between ‘ and ’ chars
+      x := y1 . FromBin(y2) . y3 ; convert binary numbers to decimal: sign = first bit
+   Else Break
+      x := RegExReplace(x,"(^|[^.\d])(\d+)(e|E)","$1$2.$3") ; add missing '.' before E (1e3 -> 1.e3)
+   ; literal scientific numbers between ‘ and ’ chars
    x := RegExReplace(x,"(\d*\.\d*|\d)([eE][+-]?\d+)","‘$1$2’")
 
-   StringReplace x, x,`%, \, All       ; %  -> \ (= MOD)
-   StringReplace x, x, **,@, All       ; ** -> @ for easier process
-   StringReplace x, x, +, ±, All       ; ± is addition
+   StringReplace x, x,`%, \, All ; %  -> \ (= MOD)
+   StringReplace x, x, **,@, All ; ** -> @ for easier process
+   StringReplace x, x, +, ±, All ; ± is addition
    x := RegExReplace(x,"(‘[^’]*)±","$1+") ; ...not inside literal numbers
-   StringReplace x, x, -, ¬, All       ; ¬ is subtraction
+   StringReplace x, x, -, ¬, All ; ¬ is subtraction
    x := RegExReplace(x,"(‘[^’]*)¬","$1-") ; ...not inside literal numbers
 
    Loop Parse, x, `;
-      y := Eval1(A_LoopField)          ; work on pre-processed sub expressions
-                                       ; return result of last sub-expression (numeric)
-   If FORM = b                         ; convert output to binary
+      y := Eval1(A_LoopField) ; work on pre-processed sub expressions
+   ; return result of last sub-expression (numeric)
+   If FORM = b ; convert output to binary
       y := W ? ToBinW(Round(y),W) : ToBin(Round(y))
    Else If (FORM="h" or FORM="x") {
-      SetFormat Integer, Hex           ; convert output to hex
+      SetFormat Integer, Hex ; convert output to hex
       y := Round(y) + 0
    }
    Else {
-      W := W="" ? "0.6g" : "0." . W    ; Set output form, Default = 6 decimal places
+      W := W="" ? "0.6g" : "0." . W ; Set output form, Default = 6 decimal places
       SetFormat FLOAT, %W%
       y += 0.0
    }
-   SetFormat Integer, %FormI%          ; restore original formats
-   SetFormat FLOAT,   %FormF%
-   Return y
+   SetFormat Integer, %FormI% ; restore original formats
+   SetFormat FLOAT, %FormF%
+Return y
 }
 
-Eval1(x) {                             ; recursive PREPROCESSING of :=, vars, (..) [decimal, no ";"]
+Eval1(x) { ; recursive PREPROCESSING of :=, vars, (..) [decimal, no ";"]
    Local i, y, y1, y2, y3
-                                       ; save function definition: f(x) := expr
+   ; save function definition: f(x) := expr
    If RegExMatch(x, "(\S*?)\((.*?)\)\s*:=\s*(.*)", y) {
       f%y1%__X := y2, f%y1%__F := y3
       Return
    }
-                                       ; execute leftmost ":=" operator of a := b := ...
+   ; execute leftmost ":=" operator of a := b := ...
    If RegExMatch(x, "(\S*?)\s*:=\s*(.*)", y) {
-      y := "x" . y1                    ; user vars internally start with x to avoid name conflicts
+      y := "x" . y1 ; user vars internally start with x to avoid name conflicts
       Return %y% := Eval1(y2)
    }
-                                       ; here: no variable to the left of last ":="
-   x := RegExReplace(x,"([\)’.\w]\s+|[\)’])([a-z_A-Z]+)","$1«$2»")  ; op -> «op»
+   ; here: no variable to the left of last ":="
+   x := RegExReplace(x,"([\)’.\w]\s+|[\)’])([a-z_A-Z]+)","$1«$2»") ; op -> «op»
 
-   x := RegExReplace(x,"\s+")          ; remove spaces, tabs, newlines
+   x := RegExReplace(x,"\s+") ; remove spaces, tabs, newlines
 
    x := RegExReplace(x,"([a-z_A-Z]\w*)\(","'$1'(") ; func( -> 'func'( to avoid atan|tan conflicts
 
    x := RegExReplace(x,"([a-z_A-Z]\w*)([^\w'»’]|$)","%x$1%$2") ; VAR -> %xVAR%
    x := RegExReplace(x,"(‘[^’]*)%x[eE]%","$1e") ; in numbers %xe% -> e
-   x := RegExReplace(x,"‘|’")          ; no more need for number markers
-   Transform x, Deref, %x%             ; dereference all right-hand-side %var%-s
+   x := RegExReplace(x,"‘|’") ; no more need for number markers
+   Transform x, Deref, %x% ; dereference all right-hand-side %var%-s
 
-   Loop {                              ; find last innermost (..)
+   Loop { ; find last innermost (..)
       If RegExMatch(x, "(.*)\(([^\(\)]*)\)(.*)", y)
-         x := y1 . Eval@(y2) . y3      ; replace (x) with value of x
+         x := y1 . Eval@(y2) . y3 ; replace (x) with value of x
       Else Break
-   }
-   Return Eval@(x)
+      }
+Return Eval@(x)
 }
 
-Eval@(x) {                             ; EVALUATE PRE-PROCESSED EXPRESSIONS [decimal, NO space, vars, (..), ";", ":="]
+Eval@(x) { ; EVALUATE PRE-PROCESSED EXPRESSIONS [decimal, NO space, vars, (..), ";", ":="]
    Local i, y, y1, y2, y3, y4
 
-   If x is number                      ; no more operators left
+   If x is number ; no more operators left
       Return x
-                                       ; execute rightmost ?,: operator
+   ; execute rightmost ?,: operator
    RegExMatch(x, "(.*)(\?|:)(.*)", y)
-   IfEqual y2,?,  Return Eval@(y1) ? Eval@(y3) : ""
-   IfEqual y2,:,  Return ((y := Eval@(y1)) = "" ? Eval@(y3) : y)
+IfEqual y2,?, Return Eval@(y1) ? Eval@(y3) : ""
+IfEqual y2,:, Return ((y := Eval@(y1)) = "" ? Eval@(y3) : y)
 
-   StringGetPos i, x, ||, R            ; execute rightmost || operator
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) || Eval@(SubStr(x,3+i))
-   StringGetPos i, x, &&, R            ; execute rightmost && operator
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) && Eval@(SubStr(x,3+i))
-                                       ; execute rightmost =, <> operator
-   RegExMatch(x, "(.*)(?<![\<\>])(\<\>|=)(.*)", y)
-   IfEqual y2,=,  Return Eval@(y1) =  Eval@(y3)
-   IfEqual y2,<>, Return Eval@(y1) <> Eval@(y3)
-                                       ; execute rightmost <,>,<=,>= operator
-   RegExMatch(x, "(.*)(?<![\<\>])(\<=?|\>=?)(?![\<\>])(.*)", y)
-   IfEqual y2,<,  Return Eval@(y1) <  Eval@(y3)
-   IfEqual y2,>,  Return Eval@(y1) >  Eval@(y3)
-   IfEqual y2,<=, Return Eval@(y1) <= Eval@(y3)
-   IfEqual y2,>=, Return Eval@(y1) >= Eval@(y3)
-                                       ; execute rightmost user operator (low precedence)
-   RegExMatch(x, "i)(.*)«(.*?)»(.*)", y)
-   If IsFunc(y2)
-      Return %y2%(Eval@(y1),Eval@(y3)) ; predefined relational ops
+StringGetPos i, x, ||, R ; execute rightmost || operator
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) || Eval@(SubStr(x,3+i))
+StringGetPos i, x, &&, R ; execute rightmost && operator
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) && Eval@(SubStr(x,3+i))
+; execute rightmost =, <> operator
+RegExMatch(x, "(.*)(?<![\<\>])(\<\>|=)(.*)", y)
+IfEqual y2,=, Return Eval@(y1) = Eval@(y3)
+IfEqual y2,<>, Return Eval@(y1) <> Eval@(y3)
+; execute rightmost <,>,<=,>= operator
+RegExMatch(x, "(.*)(?<![\<\>])(\<=?|\>=?)(?![\<\>])(.*)", y)
+IfEqual y2,<, Return Eval@(y1) < Eval@(y3)
+IfEqual y2,>, Return Eval@(y1) > Eval@(y3)
+IfEqual y2,<=, Return Eval@(y1) <= Eval@(y3)
+IfEqual y2,>=, Return Eval@(y1) >= Eval@(y3)
+; execute rightmost user operator (low precedence)
+RegExMatch(x, "i)(.*)«(.*?)»(.*)", y)
+If IsFunc(y2)
+Return %y2%(Eval@(y1),Eval@(y3)) ; predefined relational ops
 
-   StringGetPos i, x, |, R             ; execute rightmost | operator
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) | Eval@(SubStr(x,2+i))
-   StringGetPos i, x, ^, R             ; execute rightmost ^ operator
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) ^ Eval@(SubStr(x,2+i))
-   StringGetPos i, x, &, R             ; execute rightmost & operator
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) & Eval@(SubStr(x,2+i))
-                                       ; execute rightmost <<, >> operator
-   RegExMatch(x, "(.*)(\<\<|\>\>)(.*)", y)
-   IfEqual y2,<<, Return Eval@(y1) << Eval@(y3)
-   IfEqual y2,>>, Return Eval@(y1) >> Eval@(y3)
-                                       ; execute rightmost +- (not unary) operator
-   RegExMatch(x, "(.*[^!\~±¬\@\*/\\])(±|¬)(.*)", y) ; lower precedence ops already handled
-   IfEqual y2,±,  Return Eval@(y1) + Eval@(y3)
-   IfEqual y2,¬,  Return Eval@(y1) - Eval@(y3)
-                                       ; execute rightmost */% operator
-   RegExMatch(x, "(.*)(\*|/|\\)(.*)", y)
-   IfEqual y2,*,  Return Eval@(y1) * Eval@(y3)
-   IfEqual y2,/,  Return Eval@(y1) / Eval@(y3)
-   IfEqual y2,\,  Return Mod(Eval@(y1),Eval@(y3))
-                                       ; execute rightmost power
-   StringGetPos i, x, @, R
-   IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) ** Eval@(SubStr(x,2+i))
-                                       ; execute rightmost function, unary operator
-   If !RegExMatch(x,"(.*)(!|±|¬|~|'(.*)')(.*)", y)
-      Return x                         ; no more function (y1 <> "" only at multiple unaries: --+-)
-   IfEqual y2,!,Return Eval@(y1 . !y4) ; unary !
-   IfEqual y2,±,Return Eval@(y1 .  y4) ; unary +
-   IfEqual y2,¬,Return Eval@(y1 . -y4) ; unary - (they behave like functions)
-   IfEqual y2,~,Return Eval@(y1 . ~y4) ; unary ~
-   If IsFunc(y3)
-      Return Eval@(y1 . %y3%(y4))      ; built-in and predefined functions(y4)
-   Return Eval@(y1 . Eval1(RegExReplace(f%y3%__F, f%y3%__X, y4))) ; LAST: user defined functions
+StringGetPos i, x, |, R ; execute rightmost | operator
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) | Eval@(SubStr(x,2+i))
+StringGetPos i, x, ^, R ; execute rightmost ^ operator
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) ^ Eval@(SubStr(x,2+i))
+StringGetPos i, x, &, R ; execute rightmost & operator
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) & Eval@(SubStr(x,2+i))
+; execute rightmost <<, >> operator
+RegExMatch(x, "(.*)(\<\<|\>\>)(.*)", y)
+IfEqual y2,<<, Return Eval@(y1) << Eval@(y3)
+IfEqual y2,>>, Return Eval@(y1) >> Eval@(y3)
+; execute rightmost +- (not unary) operator
+RegExMatch(x, "(.*[^!\~±¬\@\*/\\])(±|¬)(.*)", y) ; lower precedence ops already handled
+IfEqual y2,±, Return Eval@(y1) + Eval@(y3)
+IfEqual y2,¬, Return Eval@(y1) - Eval@(y3)
+; execute rightmost */% operator
+RegExMatch(x, "(.*)(\*|/|\\)(.*)", y)
+IfEqual y2,*, Return Eval@(y1) * Eval@(y3)
+IfEqual y2,/, Return Eval@(y1) / Eval@(y3)
+IfEqual y2,\, Return Mod(Eval@(y1),Eval@(y3))
+; execute rightmost power
+StringGetPos i, x, @, R
+IfGreaterOrEqual i,0, Return Eval@(SubStr(x,1,i)) ** Eval@(SubStr(x,2+i))
+; execute rightmost function, unary operator
+If !RegExMatch(x,"(.*)(!|±|¬|~|'(.*)')(.*)", y)
+Return x ; no more function (y1 <> "" only at multiple unaries: --+-)
+IfEqual y2,!,Return Eval@(y1 . !y4) ; unary !
+IfEqual y2,±,Return Eval@(y1 . y4) ; unary +
+IfEqual y2,¬,Return Eval@(y1 . -y4) ; unary - (they behave like functions)
+IfEqual y2,~,Return Eval@(y1 . ~y4) ; unary ~
+If IsFunc(y3)
+Return Eval@(y1 . %y3%(y4)) ; built-in and predefined functions(y4)
+Return Eval@(y1 . Eval1(RegExReplace(f%y3%__F, f%y3%__X, y4))) ; LAST: user defined functions
 }
 
-ToBin(n) {      ; Binary representation of n. 1st bit is SIGN: -8 -> 1000, -1 -> 1, 0 -> 0, 8 -> 01000
-   Return n=0||n=-1 ? -n : ToBin(n>>1) . n&1
+ToBin(n) { ; Binary representation of n. 1st bit is SIGN: -8 -> 1000, -1 -> 1, 0 -> 0, 8 -> 01000
+Return n=0||n=-1 ? -n : ToBin(n>>1) . n&1
 }
 ToBinW(n,W=8) { ; LS W-bits of Binary representation of n
-   Loop %W%     ; Recursive (slower): Return W=1 ? n&1 : ToBinW(n>>1,W-1) . n&1
+   Loop %W% ; Recursive (slower): Return W=1 ? n&1 : ToBinW(n>>1,W-1) . n&1
       b := n&1 . b, n >>= 1
-   Return b
+Return b
 }
 FromBin(bits) { ; Number converted from the binary "bits" string, 1st bit is SIGN
    n = 0
    Loop Parse, bits
       n += n + A_LoopField
-   Return n - (SubStr(bits,1,1)<<StrLen(bits))
+Return n - (SubStr(bits,1,1)<<StrLen(bits))
 }
 
 Sgn(x) {
-   Return (x>0)-(x<0)
+Return (x>0)-(x<0)
 }
 
 MIN(a,b) {
-   Return a<b ? a : b
+Return a<b ? a : b
 }
 MAX(a,b) {
-   Return a<b ? b : a
+Return a<b ? b : a
 }
-GCD(a,b) {      ; Euclidean GCD
-   Return b=0 ? Abs(a) : GCD(b, mod(a,b))
+GCD(a,b) { ; Euclidean GCD
+Return b=0 ? Abs(a) : GCD(b, mod(a,b))
 }
-Choose(n,k) {   ; Binomial coefficient
+Choose(n,k) { ; Binomial coefficient
    p := 1, i := 0, k := k < n-k ? k : n-k
-   Loop %k%                   ; Recursive (slower): Return k = 0 ? 1 : Choose(n-1,k-1)*n//k
-      p *= (n-i)/(k-i), i+=1  ; FOR INTEGERS: p *= n-i, p //= ++i
-   Return Round(p)
+   Loop %k% ; Recursive (slower): Return k = 0 ? 1 : Choose(n-1,k-1)*n//k
+      p *= (n-i)/(k-i), i+=1 ; FOR INTEGERS: p *= n-i, p //= ++i
+Return Round(p)
 }
 
-Fib(n) {        ; n-th Fibonacci number (n < 0 OK, iterative to avoid globals)
+Fib(n) { ; n-th Fibonacci number (n < 0 OK, iterative to avoid globals)
    a := 0, b := 1
    Loop % abs(n)-1
       c := b, b += a, a := c
-   Return n=0 ? 0 : n>0 || n&1 ? b : -b
+Return n=0 ? 0 : n>0 || n&1 ? b : -b
 }
-fac(n) {        ; n!
-   Return n<2 ? 1 : n*fac(n-1)
+fac(n) { ; n!
+Return n<2 ? 1 : n*fac(n-1)
 }
