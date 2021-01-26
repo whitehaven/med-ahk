@@ -1,5 +1,5 @@
 ;;;; HOTSTRING FUNCTION ;;;;
-#h:: ; Win+H hotkey
+#n:: ; Win+N hotkey
     ; Get the text currently selected. The clipboard is used instead of
     ; "ControlGet Selected" because it works in a greater variety of editors
     ; (namely word processors).  Save the current clipboard contents to be
