@@ -65,11 +65,11 @@ Aller/Immu:
 :*R:mcm::mcg/min
 :*R:mkm::mcg/kg/min
 
-:*R:fent::fentanyl
-:*R:prop::propofol
-:*R:Levo::Levophed
-:*R:phen::phenylephrine
-:*R:Prec::Precedex
+:*R:fent\::fentanyl
+:*R:prop\::propofol
+:*R:Levo\::Levophed
+:*R:phen\::phenylephrine
+:*R:Prec\::Precedex
 
 :*R:ahrf\::acute hypoxemic respiratory failure
 
