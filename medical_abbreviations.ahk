@@ -107,6 +107,8 @@ Aller/Immu:
 :*R:ic\::intracranial
 :*R:brbpr\::bright red blood per rectum
 :*R:nvdc\::nausea, vomiting, diarrhea, constipation
+:*R:rvr\::rapid ventricular response
+:*R:amio\::amiodarone
 
 :*R:ID\::Infectious Disease
 :*R:cards\::Cardiology 
@@ -116,6 +118,7 @@ Aller/Immu:
 :*R:nsurg\::Neurosurgery
 :*R:gensurg\::General Surgery
 :*R:pulm\::Pulmonology
+:*R:heme/onc\::Hematology/Oncology
 
 :*R:cocci\::Coccidioides
 :*R:uti\::urinary tract infection
@@ -127,7 +130,8 @@ Aller/Immu:
 :*R:new\::new onset
 :*R:res\::resolved
 
-;TODO: make bold
+:*R:m/l\::most likely
+
 :*R:events\::Events of the last 24 hours:
 
 :*R:COVID plan\::
