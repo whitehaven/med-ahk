@@ -1,39 +1,45 @@
-::yo::year old
-
-::sp::status post
-
-::cp::chest pain
-
-::ap::abdominal pain
 ::brbpr::bright red blood per rectum
 ::nvdc::nausea, vomiting, diarrhea, constipation
 
-::snf::skilled nursing facility
-
-:R:palp::palpitations
-:R:hzia::hematochezia
-:R:nvdc::nausea, vomiting, diarrhea, constipation
-
 ::.ros14::
     (
-    ROS
-Const:
-Eyes:
-ENT:
-CV:
-Resp:
-GI:
-GU:
-MSK:
-Integ:
-Neuro:
-Psych:
-Endo:
-Hemat/Lymph:
-Aller/Immu:
+ROS
+    Const: 
+    Eyes: 
+    ENT: 
+    CV: 
+    Resp: 
+    GI: 
+    GU: 
+    MSK: 
+    Integ: 
+    Neuro: 
+    Psych: 
+    Endo: 
+    Hemat/Lymph: 
+    Aller/Immu: 
     )
 
-::constsx::
+::.ros14_ni::
+    (
+ROS
+Const: 
+Eyes: 
+ENT: 
+CV: 
+Resp: 
+GI: 
+GU: 
+MSK: 
+Integ: 
+Neuro: 
+Psych: 
+Endo: 
+Hemat/Lymph: 
+Aller/Immu: 
+    )
+
+::.const::
     (
     anorexia, fevers, fatigue, malaise, night sweats, weight loss
     )

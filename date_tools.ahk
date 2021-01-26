@@ -1,22 +1,42 @@
-; date in ISO 1988 standard
-::td::
-SendInput %A_YYYY%-%A_MM%-%A_DD%
-return
-
-; date in suboptimal US format
-::td_us::
-SendInput %A_MM%/%A_DD%/%A_YYYY%
-return
-
-; date, 24-hr/military time as ISO 1988 standard
-::tdm::
+; timestamp now, date, 24-hr/military time as ISO 1988 standard
+:*:tsISO\::
 SendInput %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%
 return
 
 ; date, am/pm time
-::tdt::
+:*:tsampm\::
 FormatTime, now,, yyyy-M-d hh:mm tt
 SendInput %now%
+return
+
+; mil time now
+:*:now\::
+SendInput %A_Hour%:%A_Min%
+return
+
+; today date in ISO 1988 standard
+::tdISO\::
+SendInput %A_YYYY%-%A_MM%-%A_DD%
+return
+
+; date in suboptimal US format
+:*:tdUS\::
+SendInput %A_MM%/%A_DD%/%A_YYYY%
+return
+
+; date in suboptimal US format is DEFAULT, gets shortest name `td`
+:*:td\::
+SendInput %A_MM%/%A_DD%/%A_YYYY%
+return
+
+; med style ts = US date + mil time
+:*:tsMed\::
+SendInput %A_MM%/%A_DD%/%A_YYYY% %A_Hour%:%A_Min%
+return
+
+; med style ts = US date + mil time is DEFAULT, gets shortest name `ts`
+:*:ts\::
+SendInput %A_MM%/%A_DD%/%A_YYYY% %A_Hour%:%A_Min%
 return
 
 /*
