@@ -132,6 +132,7 @@ Aller/Immu:
 
 :*R:m/l\::most likely
 
+;TODO: make bold vs bold this line hotkey
 :*R:events\::Events of the last 24 hours:
 
 :*R:COVID plan\::
