@@ -140,6 +140,7 @@ Aller/Immu:
 [- continue dexamethasone 6mg | Solu-Medrol, Zn, Vitamin C, D
 [- continue remdesivir]
 [- continue CCP]
+[- continue AC: Heparin gtt]
 [- prone as able]
 )
 :*R:c19\::COVID-19
