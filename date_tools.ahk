@@ -34,9 +34,27 @@ return
 SendInput %A_MM%/%A_DD%/%A_YYYY% %A_Hour%:%A_Min%
 return
 
-; med style ts = US date + mil time is DEFAULT, gets shortest name `ts`
+; hospital-style ts = US date + mil time is DEFAULT, gets shortest name `ts`
 :*:ts\::
 SendInput %A_MM%/%A_DD%/%A_YYYY% %A_Hour%:%A_Min%
+return
+
+; hospital-style quick ts = US date + mil time
+:*:qts\::
+FormatTime, now,, M/d HH:mm
+SendInput %now%
+return
+
+; hospital-style quick ts = US date + mil time
+:*:qtsd\::
+FormatTime, now,, ddd M/d HH:mm
+SendInput %now%
+return
+
+; hospital-style quick ts = US date
+:*:qtd\::
+FormatTime, now,, M/d
+SendInput %now%
 return
 
 /*
