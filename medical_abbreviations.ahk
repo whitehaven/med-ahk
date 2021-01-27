@@ -51,6 +51,7 @@ Aller/Immu:
 :*R:htn\::hypertension
 :*R:afib\::atrial fibrillation
 :*R:cad\::coronary artery disease
+:*R:chadsvasc::CHA2DS2-VASc score
 
 ; Resp
 :*R:ahrf\::acute hypoxemic respiratory failure
@@ -83,6 +84,9 @@ Aller/Immu:
 ; Infectious Disease
 :*R:cocci\::Coccidioides
 :*R:c19\::COVID-19
+
+; Hematology/Oncology
+:*R:tcytopen::thrombocytopenia
 
 ; Misc
 :*R:is\::interstitial
