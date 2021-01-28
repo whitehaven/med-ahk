@@ -1,3 +1,7 @@
+#SingleInstance, Force
+SendMode Input
+SetWorkingDir, %A_ScriptDir%
+
 #Hotstring EndChars -()[]{}:;'"/\,.?!`n `t
 
 #Include medical_abbreviations.ahk
