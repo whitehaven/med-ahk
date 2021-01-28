@@ -9,4 +9,5 @@ SetWorkingDir, %A_ScriptDir%
 #Include monster_math.ahk
 #Include date_tools.ahk
 #Include icu_rotation.ahk
+#Include formatting_functions.ahk
 ; TODO: #Include markdown_tools.ahk
