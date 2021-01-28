@@ -8,6 +8,8 @@ SetWorkingDir, %A_ScriptDir%
 #Include hotstring_creator.ahk
 #Include monster_math.ahk
 #Include date_tools.ahk
-#Include icu_rotation.ahk
 #Include formatting_functions.ahk
 ; TODO: #Include markdown_tools.ahk
+
+; offline modules
+; #Include icu_rotation.ahk

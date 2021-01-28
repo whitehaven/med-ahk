@@ -1,6 +1,3 @@
-:*R:u\::alex.crist
-:*R:p\::314Extravasated
-
 :*R:mkh::mcg/kg/hr
 :*R:mch::mcg/hr
 :*R:mcm::mcg/min
@@ -11,9 +8,6 @@
 :*R:Levo::Levophed
 :*R:phen::phenylephrine
 :*R:Prec::Precedex
-
-:*R:ventset\::Mode _`; Rate _, TV _, FiO2 _, PEEP _
-:*R:abg\::pH _, pCO2 _, pO2 _, bicarb _
 
 :*R:icureqs\::
 (
@@ -36,6 +30,3 @@
 [- continue AC: Heparin gtt]
 [- prone as able]
 )
-
-;TODO: make bold
-:*R:events\::Events of the last 24 hours:
