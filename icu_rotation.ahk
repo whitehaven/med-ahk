@@ -1,8 +1,3 @@
-; TODO: need? auto-inserted top stuff; not sure what it all does
-#SingleInstance, Force
-SendMode Input
-SetWorkingDir, %A_ScriptDir%
-
 :*R:u\::alex.crist
 :*R:p\::314Extravasated
 
