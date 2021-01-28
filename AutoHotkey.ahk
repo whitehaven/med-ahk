@@ -4,7 +4,7 @@ SetWorkingDir, %A_ScriptDir%
 
 #Hotstring EndChars -()[]{}:;'"/\,.?!`n `t
 
-#Include medical_abbreviations.ahk
+#Include medical.ahk
 #Include hotstring_creator.ahk
 #Include monster_math.ahk
 #Include date_tools.ahk
