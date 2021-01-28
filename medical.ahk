@@ -122,5 +122,3 @@ Aller/Immu:
 :*R:rr\::rapid response
 :*R:ddx\::differential diagnosis
 :*R:ppx\::prophylaxis
-
-; TODO: make line bold
