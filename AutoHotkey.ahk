@@ -9,6 +9,7 @@ SetWorkingDir, %A_ScriptDir%
 #Include monster_math.ahk
 #Include date_tools.ahk
 #Include formatting_functions.ahk
+#Include windows_functions.ahk
 ; TODO: #Include markdown_tools.ahk
 
 ; offline modules
