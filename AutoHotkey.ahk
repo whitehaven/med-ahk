@@ -10,6 +10,7 @@ SetWorkingDir, %A_ScriptDir%
 #Include date_tools.ahk
 #Include formatting_functions.ahk
 #Include windows_functions.ahk
+#Include Time.ahk
 ; TODO: #Include markdown_tools.ahk
 
 ; offline modules
